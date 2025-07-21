@@ -3,46 +3,71 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', Arial, sans-serif;
-  background: #ece9f7; /* soft purple-gray */
+  background: #f5f6fa;
   color: #222;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 24px 32px 0 32px;
-  background: #7c3aed; /* purple */
+  padding: 32px 0 24px 0;
+  margin-top: 0; /* Moved header up */
+  background: linear-gradient(90deg, #7c3aed 60%, #a78bfa 100%);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.10);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
+  background: #fff;
+  padding: 8px;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 2em;
-  font-weight: 700;
+  font-size: 2.2em;
+  font-weight: 800;
   letter-spacing: 1px;
+}
+
+.subtitle {
+  margin: 8px 0 0 0;
+  font-size: 1.1em;
+  font-weight: 400;
+  color: #ede9fe;
+  letter-spacing: 0.5px;
 }
 
 .profile {
   text-align: right;
-  font-size: 0.95em;
-  color: #e9d5ff;
+  font-size: 1em;
+  color: #ede9fe;
 }
 
 .container {
   display: flex;
-  gap: 40px;
-  padding: 40px;
+  gap: 32px;
+  padding: 32px 12px;
   max-width: 900px;
   margin: 0 auto;
 }
 
 .left, .right {
-  background: #f7f3ff; /* very light purple */
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  padding: 32px 24px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+  padding: 28px 20px;
 }
 
 .left {
@@ -61,10 +86,11 @@ body {
 
 .left label {
   display: block;
-  margin-top: 18px;
+  margin-top: 16px;
   margin-bottom: 6px;
   font-weight: 600;
   color: #7c3aed;
+  letter-spacing: 0.5px;
 }
 
 .left input[type="text"],
@@ -72,13 +98,13 @@ body {
 .left select,
 .left textarea {
   width: 100%;
-  padding: 10px;
+  padding: 9px 12px;
   margin-bottom: 10px;
   border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1em;
   box-sizing: border-box;
-  background: #ece9f7;
+  background: #f3f0ff;
   transition: border 0.2s;
 }
 
@@ -88,31 +114,34 @@ body {
 .left textarea:focus {
   border-color: #7c3aed;
   outline: none;
+  background: #ede9fe;
 }
 
 .left button,
 button#calcBtn {
   width: 100%;
   padding: 12px;
-  background: #7c3aed;
+  background: linear-gradient(90deg, #7c3aed 70%, #a78bfa 100%);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1.1em;
   font-weight: 600;
   cursor: pointer;
   margin-top: 18px;
-  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .left button:hover,
 button#calcBtn:hover {
-  background: #5b21b6;
+  background: linear-gradient(90deg, #5b21b6 70%, #7c3aed 100%);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.15);
 }
 
 .time-inputs {
   display: flex;
-  gap: 18px;
+  gap: 12px;
 }
 
 .time-inputs > div {
@@ -121,26 +150,36 @@ button#calcBtn:hover {
 
 .price-box {
   margin-top: 18px;
-  padding: 18px 0;
-  font-size: 2em;
+  padding: 16px 0;
+  font-size: 1.5em;
   font-weight: 700;
   color: #7c3aed;
-  background: #e9d5ff; /* light purple */
-  border-radius: 8px;
+  background: #f3f0ff;
+  border-radius: 10px;
   width: 100%;
   text-align: center;
   box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.05);
+}
+
+#controllerPrice.price-box {
+  font-size: 1.1em;
+  color: #5b21b6;
+  background: #ede9fe;
+  margin-top: 10px;
 }
 
 .footer-note {
-  font-size: 1.1em;
+  font-size: 1em;
   text-align: center;
-  padding: 18px;
+  padding: 16px;
   font-family: 'Inter', sans-serif;
   color: #7c3aed;
-  margin-top: 40px;
-  background: #ece9f7;
-  border-top: 1px solid #d1d5db;
+  margin-top: 32px;
+  background: #f3f0ff;
+  border-top: 1px solid #e9d5ff;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 -2px 8px rgba(124, 58, 237, 0.04);
 }
 
 /* Responsive styles for mobile */
@@ -148,33 +187,37 @@ button#calcBtn:hover {
   .header {
     flex-direction: column;
     align-items: flex-start;
-    padding: 18px 12px 0 12px;
+    padding: 14px 8px 0 8px;
+    font-size: 1em;
+    border-radius: 0 0 12px 12px;
   }
   .header h1 {
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
   .container {
     flex-direction: column;
-    gap: 18px;
-    padding: 16px;
+    gap: 16px;
+    padding: 10px;
     max-width: 100%;
   }
   .left, .right {
-    padding: 18px 10px;
+    padding: 14px 8px;
     min-width: 0;
+    border-radius: 12px;
   }
   .price-box {
-    font-size: 1.3em;
-    padding: 12px 0;
+    font-size: 1.1em;
+    padding: 10px 0;
   }
   .footer-note {
-    font-size: 1em;
-    padding: 12px;
-    margin-top: 18px;
+    font-size: 0.95em;
+    padding: 10px;
+    margin-top: 14px;
+    border-radius: 0 0 12px 12px;
   }
   .time-inputs {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
   label, input, select, button {
     font-size: 1em;
