@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Level-Up Lounge Calculator</title>
+<link rel="stylesheet" href="style3.css" />
+</head>
+<body>
+
+<div class="header">
+  <h1>Level-Up Lounge Calculator</h1>
+  <div class="profile">
+    <strong>Ishuv Giri</strong><br>#stoporfail<br>
+  </div>
+</div>
+
+<div class="container">
+  <div class="left">
+    <label for="customerName">Customer Name</label>
+    <input type="text" id="customerName" placeholder="Enter customer name" />
+
+    <label for="platform">Platform</label>
+    <select id="platform">
+      <option value="ps5">PS5</option>
+      <option value="pc">PC</option>
+      <option value="netflix">Netflix Room</option>
+    </select>
+
+    <div class="time-inputs">
+      <div>
+        <label for="startTime">Start Time</label>
+        <input type="time" id="startTime" />
+      </div>
+      <div>
+        <label for="endTime">End Time</label>
+        <input type="time" id="endTime" />
+      </div>
+    </div>
+
+    <label for="controllerCount">Controllers Used</label>
+    <select id="controllerCount">
+      <option value="0">None</option>
+      <option value="1">1 Controller</option>
+      <option value="2">2 Controllers</option>
+    </select>
+
+    <div class="time-inputs" style="margin-top: 10px;">
+      <div>
+        <label for="controllerStartTime">Controller Usage Start</label>
+        <input type="time" id="controllerStartTime" />
+      </div>
+      <div>
+        <label for="controllerEndTime">Controller Usage End</label>
+        <input type="time" id="controllerEndTime" />
+      </div>
+    </div>
+
+    <button id="calcBtn">Calculate</button>
+  </div>
+
+  <div class="right">
+    <h3>Total Price</h3>
+    <div id="totalPrice" class="price-box">Rs 0</div>
+  </div>
+</div>
+
+<div class="footer-note">
+  UP TO 10 CUSTOMERS A DAY! DO NOT ASK ME WHY (I'M TOO BORED TO CODE EVERYTHING HEHEHEHEHEHEHE)
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
