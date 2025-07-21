@@ -1,127 +1,183 @@
+/* Reset and base styles */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #1c0522, #2e003e);
-  color: #f0e6ff;
+  padding: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #f7f7fa;
+  color: #222;
 }
 
 .header {
-  background: #2e003e;
-  color: #f0e6ff;
-  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 3px solid #8a2be2;
+  padding: 24px 32px 0 32px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.header img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.header h1 {
+  margin: 0;
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.profile {
+  text-align: right;
+  font-size: 0.95em;
+  color: #555;
 }
 
 .container {
   display: flex;
-  justify-content: space-between;
-  padding: 30px;
   gap: 40px;
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .left, .right {
-  background: #1a0123;
-  padding: 25px;
-  border-radius: 15px;
-  flex: 1;
-  box-shadow: 0 0 15px #7d1eff30;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 32px 24px;
 }
 
 .left {
-  max-width: 450px;
+  flex: 1.2;
+  min-width: 260px;
+}
+
+.right {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .left label {
   display: block;
-  margin-top: 15px;
-  font-weight: bold;
-  color: #d6b3ff;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
 }
 
-input[type="text"],
-input[type="time"],
-select,
-textarea {
-  width: 90%;
+.left input[type="text"],
+.left input[type="time"],
+.left select,
+.left textarea {
+  width: 100%;
   padding: 10px;
-  margin-top: 5px;
-  border: none;
-  border-radius: 8px;
-  background: #2b0037;
-  color: #f0e6ff;
-  font-size: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1em;
+  box-sizing: border-box;
+  background: #fafbfc;
+  transition: border 0.2s;
 }
 
-.checkboxes {
-  margin-top: 10px;
-  color: #e2ccff;
+.left input[type="text"]:focus,
+.left input[type="time"]:focus,
+.left select:focus,
+.left textarea:focus {
+  border-color: #7c3aed;
+  outline: none;
 }
 
-button {
-  margin-top: 20px;
+.left button,
+button#calcBtn {
   width: 100%;
   padding: 12px;
-  background-color: #8a2be2;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
+  background: #7c3aed;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
+  font-size: 1.1em;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  margin-top: 18px;
+  transition: background 0.2s;
 }
 
-button:hover {
-  background-color: #a14ef0;
-}
-
-.right {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.right h3 {
-  font-size: 24px;
-  margin-bottom: 15px;
-  color: #ddbfff;
-}
-
-.price-box {
-  background: #2e003e;
-  padding: 30px 50px;
-  font-size: 36px;
-  font-weight: bold;
-  border-radius: 20px;
-  color: #ffffff;
-  box-shadow: 0 0 25px #7d1eff40;
+.left button:hover,
+button#calcBtn:hover {
+  background: #5b21b6;
 }
 
 .time-inputs {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 18px;
 }
 
-.time-inputs div {
+.time-inputs > div {
   flex: 1;
 }
 
-.footer-note {
+.price-box {
+  margin-top: 18px;
+  padding: 18px 0;
+  font-size: 2em;
+  font-weight: 700;
+  color: #7c3aed;
+  background: #f3f0ff;
+  border-radius: 8px;
+  width: 100%;
   text-align: center;
-  padding: 20px;
-  background: #1a0123;
-  color: #aa88ff;
-  border-top: 2px solid #4b006e;
-  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.footer-note {
+  font-size: 1.1em;
+  text-align: center;
+  padding: 18px;
+  font-family: 'Inter', sans-serif;
+  color: #555;
+  margin-top: 40px;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 700px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 12px 0 12px;
+  }
+  .header h1 {
+    font-size: 1.3em;
+  }
+  .container {
+    flex-direction: column;
+    gap: 18px;
+    padding: 16px;
+    max-width: 100%;
+  }
+  .left, .right {
+    padding: 18px 10px;
+    min-width: 0;
+  }
+  .price-box {
+    font-size: 1.3em;
+    padding: 12px 0;
+  }
+  .footer-note {
+    font-size: 1em;
+    padding: 12px;
+    margin-top: 18px;
+  }
+  .time-inputs {
+    flex-direction: column;
+    gap: 8px;
+  }
+  label, input, select, button {
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
