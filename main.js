@@ -106,11 +106,14 @@ function calculateTotalFromForm() {
   // Calculate total price
   let total = calculateServicePrice(platform, roundedSessionDuration);
 
+  let controllerPrice = 0;
   if ((platform === 'ps5' || platform === 'pc') && controllerCount > 0) {
-    total += calculateControllerPrice(controllerCount, roundedControllerDuration);
+    controllerPrice = calculateControllerPrice(controllerCount, roundedControllerDuration);
+    total += controllerPrice;
   }
 
   priceDisplay.textContent = `Rs ${total > 0 ? total : 0}`;
+  document.getElementById('controllerPrice').textContent = `Controller Price: Rs ${controllerPrice}`;
 }
 
 // Enable/disable controller time inputs based on controller count selection
