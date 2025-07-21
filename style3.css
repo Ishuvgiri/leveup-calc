@@ -179,4 +179,6 @@ button#calcBtn:hover {
   label, input, select, button {
     font-size: 1em;
     width: 100%;
-    box-sizing: border-
+    box-sizing: border-box;
+  }
+}
