@@ -1,80 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Level-Up Lounge Calculator</title>
-<link rel="stylesheet" href="style3.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LevelUp Session Tracker</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="header-section">
+        <div class="logo-section">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8fyBiJDSgB_C4VwlPviXySf-07JsMlunrOw&s" alt="LevelUp Gaming Lounge" class="logo-icon" onerror="this.style.display='none'">
+          <h2> LevelUp Gaming Lounge</h2>
+        </div>
+        <div class="date-section">
+          <label for="current-date-input"> Date:</label>
+          <input type="date" id="current-date-input" class="date-input">
+        </div>
+        
+        <!-- Storage Management Section -->
+        <div class="storage-section">
+          <h4 style="color: var(--primary-purple-light); margin-bottom: 8px; font-size: 0.875rem;">📁 Storage Management</h4>
+          <div class="storage-buttons">
+            <button type="button" onclick="app.showStorageInfo()" class="storage-btn" title="View storage information">
+              📊 Info
+            </button>
+            <button type="button" onclick="app.exportToFile()" class="storage-btn" title="Export sessions to file">
+              📤 Export
+            </button>
+            <button type="button" onclick="document.getElementById('import-file').click()" class="storage-btn" title="Import sessions from file">
+              📥 Import
+            </button>
+            <button type="button" onclick="app.backupToCloud()" class="storage-btn" title="Create backup">
+              ☁️ Backup
+            </button>
+            <button type="button" onclick="if(confirm('Clear all sessions from storage?')) app.clearStorage()" class="storage-btn danger" title="Clear all sessions">
+              🗑️ Clear
+            </button>
+          </div>
+          <input type="file" id="import-file" accept=".json" style="display: none;" onchange="app.importFromFile(event)">
+        </div>
+      </div>
+      <form id="session-form">
+        <div class="form-group">
+          <label>Customer Name:</label>
+          <input type="text" name="name" required placeholder="Enter customer name" />
+        </div>
 
-<div class="header">
-  <div class="header-content">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8fyBiJDSgB_C4VwlPviXySf-07JsMlunrOw&s" alt="Game Icon" class="header-icon" />
-    <div>
-      <h1>Level-Up Lounge Calculator</h1>
-      <p class="subtitle">Fast, easy, and stylish price calculation for gaming lounge!</p>
+        <div class="form-group">
+          <label>Platform:</label>
+          <select name="platform" id="platform-select" required>
+            <option value="">-- Select Platform --</option>
+            <option value="ps">PlayStation</option>
+            <option value="pc">PC Gaming</option>
+            <option value="netflix">Netflix Room</option>
+          </select>
+        </div>
+
+        <div id="platform-units" class="hidden"></div>
+
+        <div class="form-group">
+          <label>Start Time:</label>
+          <input type="time" name="startTime" required />
+        </div>
+
+        <div class="form-group">
+          <label>End Time:</label>
+          <input type="time" name="endTime" placeholder="Leave empty for active session" />
+        </div>
+
+        <div id="controller-section" class="hidden">
+          <div class="form-group">
+            <label>Extra Controllers:</label>
+            <select name="controllerCount">
+              <option value="0">None</option>
+              <option value="1">1 Controller</option>
+              <option value="2">2 Controllers</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Controller Start Time:</label>
+            <input type="time" name="controllerStartTime" />
+          </div>
+
+          <div class="form-group">
+            <label>Controller End Time:</label>
+            <input type="time" name="controllerEndTime" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Payment Status:</label>
+          <select name="paid">
+            <option value="false">Not Paid</option>
+            <option value="true">Paid</option>
+          </select>
+        </div>
+
+        <div class="snacks-section">
+          <div class="snacks-header">
+            <h4>🍿 Snacks & Drinks</h4>
+            <button type="button" class="add-snack-btn" onclick="app.showSnackModal()">+ Add Snack</button>
+          </div>
+          <div id="snacks-list" class="snacks-list">
+            <!-- Snacks will be populated here -->
+          </div>
+        </div>
+
+        <div class="food-section">
+          <div class="food-header">
+            <h4>🍔 Food</h4>
+            <button type="button" class="add-food-btn" onclick="app.showFoodModal()">+ Add Food</button>
+          </div>
+          <div id="food-list" class="food-list">
+            <!-- Food will be populated here -->
+          </div>
+        </div>
+
+        <button type="submit">Add Session</button>
+      </form>
+    </aside>
+
+    <main class="content">
+      <h1>Active Sessions</h1>
+      <div id="sessions-list"></div>
+    </main>
+  </div>
+
+  <!-- Edit Session Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Session</h3>
+        <button class="modal-close" onclick="app.closeEditModal()">&times;</button>
+      </div>
+      <form id="edit-form">
+        <input type="hidden" id="edit-session-id">
+        
+        <div class="form-group">
+          <label>Customer Name:</label>
+          <input type="text" id="edit-name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Platform:</label>
+          <select id="edit-platform" onchange="app.handleEditPlatformChange()">
+            <option value="ps">PlayStation</option>
+            <option value="pc">PC Gaming</option>
+            <option value="netflix">Netflix Room</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="edit-unit-section">
+          <label id="edit-unit-label">Unit:</label>
+          <select id="edit-unit" required>
+            <option value="">-- Select Unit --</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Start Time:</label>
+          <input type="time" id="edit-start-time">
+        </div>
+        
+        <div class="form-group">
+          <label>End Time:</label>
+          <input type="time" id="edit-end-time">
+        </div>
+
+        <div class="form-group" id="edit-controller-section">
+          <label>Extra Controllers:</label>
+          <select id="edit-controller-count">
+            <option value="0">None</option>
+            <option value="1">1 Controller</option>
+            <option value="2">2 Controllers</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Controller Start Time:</label>
+          <input type="time" id="edit-controller-start-time">
+        </div>
+
+        <div class="form-group">
+          <label>Controller End Time:</label>
+          <input type="time" id="edit-controller-end-time">
+        </div>
+
+        <div class="form-group">
+          <label>Payment Status:</label>
+          <select id="edit-paid">
+            <option value="false">Not Paid</option>
+            <option value="true">Paid</option>
+          </select>
+        </div>
+
+        <div class="snacks-section">
+          <div class="snacks-header">
+            <h4>🍿 Snacks & Drinks</h4>
+            <button type="button" class="add-snack-btn" onclick="app.showEditSnackModal()">+ Add Snack</button>
+          </div>
+          <div id="edit-snacks-list" class="snacks-list">
+            <!-- Snacks will be populated here -->
+          </div>
+        </div>
+
+        <div class="food-section">
+          <div class="food-header">
+            <h4>🍔 Food</h4>
+            <button type="button" class="add-food-btn" onclick="app.showEditFoodModal()">+ Add Food</button>
+          </div>
+          <div id="edit-food-list" class="food-list">
+            <!-- Food will be populated here -->
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" onclick="app.closeEditModal()">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Save Changes</button>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
-<div class="container">
-  <div class="left">
-    <label for="customerName">Customer Name</label>
-    <input type="text" id="customerName" placeholder="Enter customer name" />
-
-    <label for="platform">Platform</label>
-    <select id="platform">
-      <option value="ps5">PS5</option>
-      <option value="pc">PC</option>
-      <option value="netflix">Netflix Room</option>
-    </select>
-
-    <div class="time-inputs">
-      <div>
-        <label for="startTime">Start Time</label>
-        <input type="time" id="startTime" />
+  <!-- Add Snack Modal (for new sessions) -->
+  <div id="snack-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Snack/Drink</h3>
+        <button class="modal-close" onclick="app.closeSnackModal()">&times;</button>
       </div>
-      <div>
-        <label for="endTime">End Time</label>
-        <input type="time" id="endTime" />
-      </div>
-    </div>
-
-    <label for="controllerCount">Controllers Used</label>
-    <select id="controllerCount">
-      <option value="0">None</option>
-      <option value="1">1 Controller</option>
-      <option value="2">2 Controllers</option>
-    </select>
-
-    <div class="time-inputs" style="margin-top: 10px;">
-      <div>
-        <label for="controllerStartTime">Controller Usage Start</label>
-        <input type="time" id="controllerStartTime" />
-      </div>
-      <div>
-        <label for="controllerEndTime">Controller Usage End</label>
-        <input type="time" id="controllerEndTime" />
-      </div>
-    </div>
-
-    <button id="calcBtn">Calculate</button>
-  </div>
-
-  <div class="right">
-    <h3>Total Price</h3>
-    <div id="totalPrice" class="price-box">Rs 0</div>
-    <div id="controllerPrice" class="price-box" style="font-size:1.2em; color:#5b21b6; background:#f3f0ff; margin-top:10px;">
-      Controller Price: Rs 0
+      <form id="snack-form">
+        <div class="form-group">
+          <label>Search Snacks:</label>
+          <input type="text" id="snack-search" placeholder="Type to search snacks and drinks..." oninput="app.showSnackSearchResults()">
+        </div>
+        <div class="form-group">
+          <label>Item:</label>
+          <select id="snack-item" required>
+            <option value="">-- Select Item --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity:</label>
+          <input type="number" id="snack-quantity" min="1" value="1" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" onclick="app.closeSnackModal()">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Add Item</button>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
-<div class="footer-note">
-  This is accurate at most times but if you find any bugs please report them to Ishuv.
-</div>
+  <!-- Edit Snack Modal (for editing sessions) -->
+  <div id="edit-snack-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Snack/Drink to Session</h3>
+        <button class="modal-close" onclick="app.closeEditSnackModal()">&times;</button>
+      </div>
+      <form id="edit-snack-form">
+        <div class="form-group">
+          <label>Search Snacks:</label>
+          <input type="text" id="edit-snack-search" placeholder="Type to search snacks and drinks..." oninput="app.showEditSnackSearchResults()">
+        </div>
+        <div class="form-group">
+          <label>Item:</label>
+          <select id="edit-snack-item" required>
+            <option value="">-- Select Item --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity:</label>
+          <input type="number" id="edit-snack-quantity" min="1" value="1" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" onclick="app.closeEditSnackModal()">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Add Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<script src="main.js"></script>
+  <!-- Add Food Modal (for new sessions) -->
+  <div id="food-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Food Item</h3>
+        <button class="modal-close" onclick="app.closeFoodModal()">&times;</button>
+      </div>
+      <form id="food-form">
+        <div class="form-group">
+          <label>Search Food:</label>
+          <input type="text" id="food-search" placeholder="Type to search food items..." oninput="app.showFoodSearchResults()">
+        </div>
+        <div class="form-group">
+          <label>Food Item:</label>
+          <select id="food-item" required>
+            <option value="">-- Select Food Item --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity:</label>
+          <input type="number" id="food-quantity" min="1" value="1" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" onclick="app.closeFoodModal()">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Add Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Food Modal (for editing sessions) -->
+  <div id="edit-food-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Food Item to Session</h3>
+        <button class="modal-close" onclick="app.closeEditFoodModal()">&times;</button>
+      </div>
+      <form id="edit-food-form">
+        <div class="form-group">
+          <label>Search Food:</label>
+          <input type="text" id="edit-food-search" placeholder="Type to search food items..." oninput="app.showEditFoodSearchResults()">
+        </div>
+        <div class="form-group">
+          <label>Food Item:</label>
+          <select id="edit-food-item" required>
+            <option value="">-- Select Food Item --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity:</label>
+          <input type="number" id="edit-food-quantity" min="1" value="1" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" onclick="app.closeEditFoodModal()">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Add Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Made by <strong>Ishuv</strong> 💜</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
